@@ -9,5 +9,5 @@
     {env, []},
     {modules, []},
     {licenses, []},
-    {links, []}
+    {links, ["MIT"]}
  ]}.
