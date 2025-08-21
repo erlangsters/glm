@@ -1,5 +1,5 @@
 {application, glm, [
-    {description, "An OTP library"},
+    {description, "OpenGL Mathematics for the BEAM"},
     {vsn, "0.1.0"},
     {registered, []},
     {applications, [
