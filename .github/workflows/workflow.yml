@@ -15,7 +15,9 @@ jobs:
         with:
           erlang-version: 28
           install-rebar3: true
-      - run: rebar3 compile
+      - run: |
+          rebar3 compile
+          rebar3 eunit
 
   # On macOS and Windows, the EGL dependency will need the location of ANGLE
   # libraries and headers (which we specify via environment variables).
@@ -27,7 +29,9 @@ jobs:
         with:
           erlang-version: 28
           install-rebar3: true
-      - run: rebar3 compile
+      - run: |
+          rebar3 compile
+          rebar3 eunit
 
   windows:
     runs-on: windows-latest
@@ -37,5 +41,7 @@ jobs:
         with:
           erlang-version: 28
           install-rebar3: true
-      - run: rebar3 compile
+      - run: |
+          rebar3 compile
+          rebar3 eunit
         shell: pwsh
