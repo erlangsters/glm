@@ -30,6 +30,11 @@
     float/0,
     double/0
 ]).
+-export_type([
+    length/0,
+    vec/2, vec/1,
+    vec2/1, vec3/1, vec4/1
+]).
 
 -export([
     bool/0, bool/1,
@@ -65,7 +70,24 @@
     scalar/1, scalar/2,
     scalar_value/1
 ]).
-
+-export([
+    vec2/1, vec2/2, vec2/3,
+    vec2_x/1, vec2_set_x/2,
+    vec2_y/1, vec2_set_y/2
+]).
+-export([
+    vec3/1, vec3/2, vec3/4,
+    vec3_x/1, vec3_set_x/2,
+    vec3_y/1, vec3_set_y/2,
+    vec3_z/1, vec3_set_z/2
+]).
+-export([
+    vec4/1, vec4/2, vec4/5,
+    vec4_x/1, vec4_set_x/2,
+    vec4_y/1, vec4_set_y/2,
+    vec4_z/1, vec4_set_z/2,
+    vec4_w/1, vec4_set_w/2
+]).
 -export([
     foo/0
 ]).
@@ -125,6 +147,15 @@
 -type uint64() :: scalar({uint, 64}).
 -type float() :: scalar(float).
 -type double() :: scalar(double).
+
+-type length() :: 2 | 3 | 4.
+
+-type vec(Length, Type) :: {vec, Length, Type, binary()}.
+-type vec(Type) :: vec(length(), Type).
+
+-type vec2(Type) :: vec(2, Type).
+-type vec3(Type) :: vec(3, Type).
+-type vec4(Type) :: vec(4, Type).
 
 -doc("""
 To be written.
@@ -478,6 +509,216 @@ scalar_value({scalar, T, D}) ->
         float when byte_size(D) =:= ?FLOAT_BYTE_SIZE -> glm_raw:float_value(D);
         double when byte_size(D) =:= ?DOUBLE_BYTE_SIZE -> glm_raw:double_value(D)
     end.
+
+-doc("""
+To be written.
+""").
+-spec vec2(T) -> vec2(T) when T :: type().
+vec2(T) ->
+    {vec, 2, T, glm_raw:vec2(T)}.
+
+-doc("""
+To be written.
+""").
+-spec vec2(T, term()) -> vec2(T) when T :: type().
+vec2(T, V) ->
+    ?EXCEPTION_IF_INVALID_VALUE(V, T),
+    {vec, 2, T, glm_raw:vec2(T, V)}.
+
+-doc("""
+To be written.
+""").
+-spec vec2(T, term(), term()) -> vec2(T) when T :: type().
+vec2(T, X, Y) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    {vec, 2, T, glm_raw:vec2(T, X, Y)}.
+
+-doc("""
+To be written.
+""").
+-spec vec2_x(vec2(T)) -> term() when T :: type().
+vec2_x({vec, 2, T, D}) ->
+    glm_raw:vec2_x(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec2_set_x(vec2(T), term()) -> vec2(T) when T :: type().
+vec2_set_x({vec, 2, T, D}, X) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    {vec, 2, T, glm_raw:vec2_set_x(T, D, X)}.
+
+-doc("""
+To be written.
+""").
+-spec vec2_y(vec2(T)) -> term() when T :: type().
+vec2_y({vec, 2, T, D}) ->
+    glm_raw:vec2_y(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec2_set_y(vec2(T), term()) -> vec2(T) when T :: type().
+vec2_set_y({vec, 2, T, D}, Y) ->
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    {vec, 2, T, glm_raw:vec2_set_y(T, D, Y)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3(T) -> vec3(T) when T :: type().
+vec3(T) ->
+    {vec, 3, T, glm_raw:vec3(T)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3(T, term()) -> vec3(T) when T :: type().
+vec3(T, V) ->
+    ?EXCEPTION_IF_INVALID_VALUE(V, T),
+    {vec, 3, T, glm_raw:vec3(T, V)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3(T, term(), term(), term()) -> vec3(T) when T :: type().
+vec3(T, X, Y, Z) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    ?EXCEPTION_IF_INVALID_VALUE(Z, T),
+    {vec, 3, T, glm_raw:vec3(T, X, Y, Z)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3_x(vec3(T)) -> term() when T :: type().
+vec3_x({vec, 3, T, D}) ->
+    glm_raw:vec3_x(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec3_set_x(vec3(T), term()) -> vec3(T) when T :: type().
+vec3_set_x({vec, 3, T, D}, X) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    {vec, 3, T, glm_raw:vec3_set_x(T, D, X)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3_y(vec3(T)) -> term() when T :: type().
+vec3_y({vec, 3, T, D}) ->
+    glm_raw:vec3_y(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec3_set_y(vec3(T), term()) -> vec3(T) when T :: type().
+vec3_set_y({vec, 3, T, D}, Y) ->
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    {vec, 3, T, glm_raw:vec3_set_y(T, D, Y)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3_z(vec3(T)) -> term() when T :: type().
+vec3_z({vec, 3, T, D}) ->
+    glm_raw:vec3_z(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec3_set_z(vec3(T), term()) -> vec3(T) when T :: type().
+vec3_set_z({vec, 3, T, D}, Z) ->
+    ?EXCEPTION_IF_INVALID_VALUE(Z, T),
+    {vec, 3, T, glm_raw:vec3_set_z(T, D, Z)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4(T) -> vec4(T) when T :: type().
+vec4(T) ->
+    {vec, 4, T, glm_raw:vec4(T)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4(T, term()) -> vec4(T) when T :: type().
+vec4(T, V) ->
+    ?EXCEPTION_IF_INVALID_VALUE(V, T),
+    {vec, 4, T, glm_raw:vec4(T, V)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4(T, term(), term(), term(), term()) -> vec4(T) when T :: type().
+vec4(T, X, Y, Z, W) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    ?EXCEPTION_IF_INVALID_VALUE(Z, T),
+    ?EXCEPTION_IF_INVALID_VALUE(W, T),
+    {vec, 4, T, glm_raw:vec4(T, X, Y, Z, W)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4_x(vec4(T)) -> term() when T :: type().
+vec4_x({vec, 4, T, D}) ->
+    glm_raw:vec4_x(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec4_set_x(vec4(T), term()) -> vec4(T) when T :: type().
+vec4_set_x({vec, 4, T, D}, X) ->
+    ?EXCEPTION_IF_INVALID_VALUE(X, T),
+    {vec, 4, T, glm_raw:vec4_set_x(T, D, X)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4_y(vec4(T)) -> term() when T :: type().
+vec4_y({vec, 4, T, D}) ->
+    glm_raw:vec4_y(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec4_set_y(vec4(T), term()) -> vec4(T) when T :: type().
+vec4_set_y({vec, 4, T, D}, Y) ->
+    ?EXCEPTION_IF_INVALID_VALUE(Y, T),
+    {vec, 4, T, glm_raw:vec4_set_y(T, D, Y)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4_z(vec4(T)) -> term() when T :: type().
+vec4_z({vec, 4, T, D}) ->
+    glm_raw:vec4_z(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec4_set_z(vec4(T), term()) -> vec4(T) when T :: type().
+vec4_set_z({vec, 4, T, D}, Z) ->
+    ?EXCEPTION_IF_INVALID_VALUE(Z, T),
+    {vec, 4, T, glm_raw:vec4_set_z(T, D, Z)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4_w(vec4(T)) -> term() when T :: type().
+vec4_w({vec, 4, T, D}) ->
+    glm_raw:vec4_w(T, D).
+
+-doc("""
+To be written.
+""").
+-spec vec4_set_w(vec4(T), term()) -> vec4(T) when T :: type().
+vec4_set_w({vec, 4, T, D}, W) ->
+    ?EXCEPTION_IF_INVALID_VALUE(W, T),
+    {vec, 4, T, glm_raw:vec4_set_w(T, D, W)}.
 
 -doc("""
 To be written.
