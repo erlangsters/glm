@@ -133,3 +133,31 @@ round_test() ->
     1.0 = glm:vec4_w(R6),
 
     ok.
+
+round_even_test() ->
+    R1 = glm:round_even(glm:vec2(float, 3.5, 4.5)),
+    4.0 = glm:vec2_x(R1),
+    4.0 = glm:vec2_y(R1),
+    R2 = glm:round_even(glm:vec2(double, 3.5, 4.5)),
+    4.0 = glm:vec2_x(R2),
+    4.0 = glm:vec2_y(R2),
+    R3 = glm:round_even(glm:vec3(float, 3.5, 4.5, 5.5)),
+    4.0 = glm:vec3_x(R3),
+    4.0 = glm:vec3_y(R3),
+    6.0 = glm:vec3_z(R3),
+    R4 = glm:round_even(glm:vec3(double, 3.5, 4.5, 5.5)),
+    4.0 = glm:vec3_x(R4),
+    4.0 = glm:vec3_y(R4),
+    6.0 = glm:vec3_z(R4),
+    R5 = glm:round_even(glm:vec4(float, 3.5, 4.5, 5.5, 6.5)),
+    4.0 = glm:vec4_x(R5),
+    4.0 = glm:vec4_y(R5),
+    6.0 = glm:vec4_z(R5),
+    6.0 = glm:vec4_w(R5),
+    R6 = glm:round_even(glm:vec4(double, 3.5, 4.5, 5.5, 6.5)),
+    4.0 = glm:vec4_x(R6),
+    4.0 = glm:vec4_y(R6),
+    6.0 = glm:vec4_z(R6),
+    6.0 = glm:vec4_w(R6),
+
+    ok.

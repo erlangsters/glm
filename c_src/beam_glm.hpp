@@ -29,3 +29,8 @@ template<int L, typename T>
 inline void beam_round(const ErlNifBinary& input, ErlNifBinary& output) {
     *(glm::vec<L, T, glm::defaultp>*)output.data = glm::round(*(const glm::vec<L, T, glm::defaultp>*)input.data);
 }
+
+template<int L, typename T>
+inline void beam_round_even(const ErlNifBinary& input, ErlNifBinary& output) {
+    *(glm::vec<L, T, glm::defaultp>*)output.data = glm::roundEven(*(const glm::vec<L, T, glm::defaultp>*)input.data);
+}

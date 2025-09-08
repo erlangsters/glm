@@ -93,7 +93,8 @@ OpenGL Mathematics (GLM) for the BEAM.
 ]).
 -export([
     clamp/3,
-    round/1
+    round/1,
+    round_even/1
 ]).
 
 -include("glm.hrl").
@@ -765,4 +766,14 @@ To be written.
 .
 round({vec, L, T, D}) when T =:= float; T =:= double ->
     R = glm_raw:round(T, L, D),
+    {vec, L, T, R}.
+
+-doc("""
+To be written.
+""").
+-spec
+    round_even(vec(L, T)) -> vec(L, T) when T :: float | double, L :: length()
+.
+round_even({vec, L, T, D}) when T =:= float; T =:= double ->
+    R = glm_raw:round_even(T, L, D),
     {vec, L, T, R}.

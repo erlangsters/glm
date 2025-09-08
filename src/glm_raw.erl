@@ -64,7 +64,8 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
 ]}).
 -compile({inline, [
     clamp/6,
-    round/3
+    round/3,
+    round_even/3
 ]}).
 -export([
     bool/0, bool/1,
@@ -116,11 +117,13 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
 ]).
 -export([
     clamp/6,
-    round/3
+    round/3,
+    round_even/3
 ]).
 -nifs([
     clamp_raw/6,
-    round_raw/3
+    round_raw/3,
+    round_even_raw/3
 ]).
 
 -on_load(glm_init/0).
@@ -2624,4 +2627,26 @@ To be written.
     X :: binary()
 ) -> binary().
 round_raw(_T, _L, _X) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec round_even(
+    T :: glm:type(),
+    L :: glm:length(),
+    X :: binary()
+) -> binary().
+round_even(T, L, X) ->
+    round_even_raw(?GLM_TYPE(T), L, X).
+
+-doc("""
+To be written.
+""").
+-spec round_even_raw(
+    T :: integer(),
+    L :: glm:length(),
+    X :: binary()
+) -> binary().
+round_even_raw(_T, _L, _X) ->
     erlang:nif_error(beam_glm_not_loaded).

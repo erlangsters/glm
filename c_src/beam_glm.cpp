@@ -425,9 +425,69 @@ static ERL_NIF_TERM nif_glm_round(ErlNifEnv* env, int argc, const ERL_NIF_TERM a
     return enif_make_binary(env, &output_bin);
 }
 
+static ERL_NIF_TERM nif_glm_round_even(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    int type;
+    if (!enif_get_int(env, argv[0], &type)) {
+        return enif_make_badarg(env);
+    }
+    if (type != GLM_FLOAT && type != GLM_DOUBLE) {
+        return enif_make_badarg(env);
+    }
+
+    int length;
+    if (!get_glm_length(env, argv[1], &length)) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary input_bin;
+    if (!enif_inspect_binary(env, argv[2], &input_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary output_bin;
+    if (!enif_alloc_binary(input_bin.size, &output_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    if (length == 2) {
+        switch (type) {
+            case GLM_FLOAT:
+                beam_round_even<2, float>(input_bin, output_bin);
+                break;
+            case GLM_DOUBLE:
+                beam_round_even<2, double>(input_bin, output_bin);
+                break;
+        }
+    } else if (length == 3) {
+        switch (type) {
+            case GLM_FLOAT:
+                beam_round_even<3, float>(input_bin, output_bin);
+                break;
+            case GLM_DOUBLE:
+                beam_round_even<3, double>(input_bin, output_bin);
+                break;
+        }
+    } else if (length == 4) {
+        switch (type) {
+            case GLM_FLOAT:
+                beam_round_even<4, float>(input_bin, output_bin);
+                break;
+            case GLM_DOUBLE:
+                beam_round_even<4, double>(input_bin, output_bin);
+                break;
+        }
+    } else {
+        return enif_make_badarg(env);
+    }
+
+    return enif_make_binary(env, &output_bin);
+}
+
 static ErlNifFunc nif_functions[] = {
     {"clamp_raw", 6, nif_glm_clamp, 0},
-    {"round_raw", 3, nif_glm_round, 0}
+    {"round_raw", 3, nif_glm_round, 0},
+    {"round_even_raw", 3, nif_glm_round_even, 0}
 };
 
 ERL_NIF_INIT(
