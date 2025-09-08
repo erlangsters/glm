@@ -4,20 +4,6 @@
 #include <glm/glm.hpp>
 #include "beam_glm.hpp"
 
-enum GlmType {
-    GLM_BOOL = 1,
-    GLM_INT8 = 2,
-    GLM_INT16 = 3,
-    GLM_INT32 = 4,
-    GLM_INT64 = 5,
-    GLM_UINT8 = 6,
-    GLM_UINT16 = 7,
-    GLM_UINT32 = 8,
-    GLM_UINT64 = 9,
-    GLM_FLOAT = 10,
-    GLM_DOUBLE = 11
-};
-
 static int get_glm_type(ErlNifEnv* env, ERL_NIF_TERM arg, int* type)
 {
     if (!enif_get_int(env, arg, type)) {
@@ -484,10 +470,176 @@ static ERL_NIF_TERM nif_glm_round_even(ErlNifEnv* env, int argc, const ERL_NIF_T
     return enif_make_binary(env, &output_bin);
 }
 
+template<typename T>
+using EaseFunc2 = void(*)(const ErlNifBinary&, ErlNifBinary&);
+
+template<typename T>
+using EaseFunc3 = void(*)(const ErlNifBinary&, const ErlNifBinary&, ErlNifBinary&);
+
+inline ERL_NIF_TERM nif_glm_ease_2arg(
+    ErlNifEnv* env,
+    int argc, const
+    ERL_NIF_TERM argv[],
+    EaseFunc2<float> float_func,
+    EaseFunc2<double> double_func
+) {
+    int type;
+    if (!enif_get_int(env, argv[0], &type)) {
+        return enif_make_badarg(env);
+    }
+    if (type != GLM_FLOAT && type != GLM_DOUBLE) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary input_bin;
+    if (!enif_inspect_binary(env, argv[1], &input_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary output_bin;
+    if (!enif_alloc_binary(input_bin.size, &output_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    switch (type) {
+        case GLM_FLOAT:
+            float_func(input_bin, output_bin);
+            break;
+        case GLM_DOUBLE:
+            double_func(input_bin, output_bin);
+            break;
+    }
+
+    return enif_make_binary(env, &output_bin);
+}
+
+inline ERL_NIF_TERM nif_glm_ease_3arg(
+    ErlNifEnv* env,
+    int argc, const
+    ERL_NIF_TERM argv[],
+    EaseFunc3<float> float_func,
+    EaseFunc3<double> double_func
+) {
+    int type;
+    if (!enif_get_int(env, argv[0], &type)) {
+        return enif_make_badarg(env);
+    }
+    if (type != GLM_FLOAT && type != GLM_DOUBLE) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary input1_bin;
+    if (!enif_inspect_binary(env, argv[1], &input1_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary input2_bin;
+    if (!enif_inspect_binary(env, argv[2], &input2_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    ErlNifBinary output_bin;
+    if (!enif_alloc_binary(input1_bin.size, &output_bin)) {
+        return enif_make_badarg(env);
+    }
+
+    switch (type) {
+        case GLM_FLOAT:
+            float_func(input1_bin, input2_bin, output_bin);
+            break;
+        case GLM_DOUBLE:
+            double_func(input1_bin, input2_bin, output_bin);
+            break;
+    }
+
+    return enif_make_binary(env, &output_bin);
+}
+
+#define DEFINE_EASE_2ARG(name) \
+static ERL_NIF_TERM nif_glm_##name##_2(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) \
+{ \
+    return nif_glm_ease_2arg(env, argc, argv, beam_##name<float>, beam_##name<double>); \
+}
+
+#define DEFINE_EASE_3ARG(name) \
+static ERL_NIF_TERM nif_glm_##name##_3(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) \
+{ \
+    return nif_glm_ease_3arg(env, argc, argv, beam_##name<float>, beam_##name<double>); \
+}
+
+DEFINE_EASE_2ARG(backEaseIn)
+// DEFINE_EASE_3ARG(backEaseIn)
+DEFINE_EASE_2ARG(backEaseInOut)
+// DEFINE_EASE_3ARG(backEaseInOut)
+DEFINE_EASE_2ARG(backEaseOut)
+// DEFINE_EASE_3ARG(backEaseOut)
+DEFINE_EASE_2ARG(bounceEaseIn)
+DEFINE_EASE_2ARG(bounceEaseInOut)
+DEFINE_EASE_2ARG(bounceEaseOut)
+DEFINE_EASE_2ARG(circularEaseIn)
+DEFINE_EASE_2ARG(circularEaseInOut)
+DEFINE_EASE_2ARG(circularEaseOut)
+DEFINE_EASE_2ARG(cubicEaseIn)
+DEFINE_EASE_2ARG(cubicEaseInOut)
+DEFINE_EASE_2ARG(cubicEaseOut)
+DEFINE_EASE_2ARG(elasticEaseIn)
+DEFINE_EASE_2ARG(elasticEaseInOut)
+DEFINE_EASE_2ARG(elasticEaseOut)
+DEFINE_EASE_2ARG(exponentialEaseIn)
+DEFINE_EASE_2ARG(exponentialEaseInOut)
+DEFINE_EASE_2ARG(exponentialEaseOut)
+DEFINE_EASE_2ARG(linearInterpolation)
+DEFINE_EASE_2ARG(quadraticEaseIn)
+DEFINE_EASE_2ARG(quadraticEaseInOut)
+DEFINE_EASE_2ARG(quadraticEaseOut)
+DEFINE_EASE_2ARG(quarticEaseIn)
+DEFINE_EASE_2ARG(quarticEaseInOut)
+DEFINE_EASE_2ARG(quarticEaseOut)
+DEFINE_EASE_2ARG(quinticEaseIn)
+DEFINE_EASE_2ARG(quinticEaseInOut)
+DEFINE_EASE_2ARG(quinticEaseOut)
+DEFINE_EASE_2ARG(sineEaseIn)
+DEFINE_EASE_2ARG(sineEaseInOut)
+DEFINE_EASE_2ARG(sineEaseOut)
+
 static ErlNifFunc nif_functions[] = {
     {"clamp_raw", 6, nif_glm_clamp, 0},
     {"round_raw", 3, nif_glm_round, 0},
-    {"round_even_raw", 3, nif_glm_round_even, 0}
+    {"round_even_raw", 3, nif_glm_round_even, 0},
+    {"back_ease_in_raw", 2, nif_glm_backEaseIn_2, 0},
+    // {"back_ease_in_raw", 3, nif_glm_back_ease_in3, 0},
+    {"back_ease_in_out_raw", 2, nif_glm_backEaseInOut_2, 0},
+    // {"back_ease_in_out_raw", 3, nif_glm_back_ease_in_out3, 0},
+    {"back_ease_out_raw", 2, nif_glm_backEaseOut_2, 0},
+    // {"back_ease_out_raw", 3, nif_glm_back_ease_out3, 0},
+    {"bounce_ease_in_raw", 2, nif_glm_bounceEaseIn_2, 0},
+    {"bounce_ease_in_out_raw", 2, nif_glm_bounceEaseInOut_2, 0},
+    {"bounce_ease_out_raw", 2, nif_glm_bounceEaseOut_2, 0},
+    {"circular_ease_in_raw", 2, nif_glm_circularEaseIn_2, 0},
+    {"circular_ease_in_out_raw", 2, nif_glm_circularEaseInOut_2, 0},
+    {"circular_ease_out_raw", 2, nif_glm_circularEaseOut_2, 0},
+    {"cubic_ease_in_raw", 2, nif_glm_cubicEaseIn_2, 0},
+    {"cubic_ease_in_out_raw", 2, nif_glm_cubicEaseInOut_2, 0},
+    {"cubic_ease_out_raw", 2, nif_glm_cubicEaseOut_2, 0},
+    {"elastic_ease_in_raw", 2, nif_glm_elasticEaseIn_2, 0},
+    {"elastic_ease_in_out_raw", 2, nif_glm_elasticEaseInOut_2, 0},
+    {"elastic_ease_out_raw", 2, nif_glm_elasticEaseOut_2, 0},
+    {"exponential_ease_in_raw", 2, nif_glm_exponentialEaseIn_2, 0},
+    {"exponential_ease_in_out_raw", 2, nif_glm_exponentialEaseInOut_2, 0},
+    {"exponential_ease_out_raw", 2, nif_glm_exponentialEaseOut_2, 0},
+    {"linear_interpolation_raw", 2, nif_glm_linearInterpolation_2, 0},
+    {"quadratic_ease_in_raw", 2, nif_glm_quadraticEaseIn_2, 0},
+    {"quadratic_ease_in_out_raw", 2, nif_glm_quadraticEaseInOut_2, 0},
+    {"quadratic_ease_out_raw", 2, nif_glm_quadraticEaseOut_2, 0},
+    {"quartic_ease_in_raw", 2, nif_glm_quarticEaseIn_2, 0},
+    {"quartic_ease_in_out_raw", 2, nif_glm_quarticEaseInOut_2, 0},
+    {"quartic_ease_out_raw", 2, nif_glm_quarticEaseOut_2, 0},
+    {"quintic_ease_in_raw", 2, nif_glm_quinticEaseIn_2, 0},
+    {"quintic_ease_in_out_raw", 2, nif_glm_quinticEaseInOut_2, 0},
+    {"quintic_ease_out_raw", 2, nif_glm_quinticEaseOut_2, 0},
+    {"sine_ease_in_raw", 2, nif_glm_sineEaseIn_2, 0},
+    {"sine_ease_in_out_raw", 2, nif_glm_sineEaseInOut_2, 0},
+    {"sine_ease_out_raw", 2, nif_glm_sineEaseOut_2, 0}
 };
 
 ERL_NIF_INIT(

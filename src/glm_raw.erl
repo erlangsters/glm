@@ -120,10 +120,74 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
     round/3,
     round_even/3
 ]).
+-export([
+    back_ease_in/2, back_ease_in/3,
+    back_ease_in_out/2, back_ease_in_out/3,
+    back_ease_out/2, back_ease_out/3,
+    bounce_ease_in/2,
+    bounce_ease_in_out/2,
+    bounce_ease_out/2,
+    circular_ease_in/2,
+    circular_ease_in_out/2,
+    circular_ease_out/2,
+    cubic_ease_in/2,
+    cubic_ease_in_out/2,
+    cubic_ease_out/2,
+    elastic_ease_in/2,
+    elastic_ease_in_out/2,
+    elastic_ease_out/2,
+    exponential_ease_in/2,
+    exponential_ease_in_out/2,
+    exponential_ease_out/2,
+    linear_interpolation/2,
+    quadratic_ease_in/2,
+    quadratic_ease_in_out/2,
+    quadratic_ease_out/2,
+    quartic_ease_in/2,
+    quartic_ease_in_out/2,
+    quartic_ease_out/2,
+    quintic_ease_in/2,
+    quintic_ease_in_out/2,
+    quintic_ease_out/2,
+    sine_ease_in/2,
+    sine_ease_in_out/2,
+    sine_ease_out/2
+]).
 -nifs([
     clamp_raw/6,
     round_raw/3,
-    round_even_raw/3
+    round_even_raw/3,
+    back_ease_in_raw/2, back_ease_in_raw/3,
+    back_ease_in_out_raw/2, back_ease_in_out_raw/3,
+    back_ease_out_raw/2, back_ease_out_raw/3,
+    bounce_ease_in_raw/2,
+    bounce_ease_in_out_raw/2,
+    bounce_ease_out_raw/2,
+    circular_ease_in_raw/2,
+    circular_ease_in_out_raw/2,
+    circular_ease_out_raw/2,
+    cubic_ease_in_raw/2,
+    cubic_ease_in_out_raw/2,
+    cubic_ease_out_raw/2,
+    elastic_ease_in_raw/2,
+    elastic_ease_in_out_raw/2,
+    elastic_ease_out_raw/2,
+    exponential_ease_in_raw/2,
+    exponential_ease_in_out_raw/2,
+    exponential_ease_out_raw/2,
+    linear_interpolation_raw/2,
+    quadratic_ease_in_raw/2,
+    quadratic_ease_in_out_raw/2,
+    quadratic_ease_out_raw/2,
+    quartic_ease_in_raw/2,
+    quartic_ease_in_out_raw/2,
+    quartic_ease_out_raw/2,
+    quintic_ease_in_raw/2,
+    quintic_ease_in_out_raw/2,
+    quintic_ease_out_raw/2,
+    sine_ease_in_raw/2,
+    sine_ease_in_out_raw/2,
+    sine_ease_out_raw/2
 ]).
 
 -on_load(glm_init/0).
@@ -2649,4 +2713,681 @@ To be written.
     X :: binary()
 ) -> binary().
 round_even_raw(_T, _L, _X) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-spec back_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+back_ease_in(T, A) ->
+    back_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+back_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-spec back_ease_in(
+    T :: glm:type(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_in(T, A, O) ->
+    back_ease_in_raw(?GLM_TYPE(T), A, O).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_raw(
+    T :: integer(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_in_raw(_T, _A, _O) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+back_ease_in_out(T, A) ->
+    back_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+back_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_out(
+    T :: glm:type(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_in_out(T, A, O) ->
+    back_ease_in_out_raw(?GLM_TYPE(T), A, O).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_in_out_raw(
+    T :: integer(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_in_out_raw(_T, _A, _O) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+back_ease_out(T, A) ->
+    back_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+back_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_out(
+    T :: glm:type(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_out(T, A, O) ->
+    back_ease_out_raw(?GLM_TYPE(T), A, O).
+
+-doc("""
+To be written.
+""").
+-spec back_ease_out_raw(
+    T :: integer(),
+    A :: binary(),
+    O :: binary()
+) -> binary().
+back_ease_out_raw(_T, _A, _O) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-spec bounce_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+bounce_ease_in(T, A) ->
+    bounce_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec bounce_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+bounce_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec bounce_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+bounce_ease_in_out(T, A) ->
+    bounce_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec bounce_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+bounce_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec bounce_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+bounce_ease_out(T, A) ->
+    bounce_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec bounce_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+bounce_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+circular_ease_in(T, A) ->
+    circular_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+circular_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+circular_ease_in_out(T, A) ->
+    circular_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+circular_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+circular_ease_out(T, A) ->
+    circular_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec circular_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+circular_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+cubic_ease_in(T, A) ->
+    cubic_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+cubic_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+cubic_ease_in_out(T, A) ->
+    cubic_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+cubic_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+cubic_ease_out(T, A) ->
+    cubic_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec cubic_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+cubic_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+elastic_ease_in(T, A) ->
+    elastic_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+elastic_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+elastic_ease_in_out(T, A) ->
+    elastic_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+elastic_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+elastic_ease_out(T, A) ->
+    elastic_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec elastic_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+elastic_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+exponential_ease_in(T, A) ->
+    exponential_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+exponential_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+exponential_ease_in_out(T, A) ->
+    exponential_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+exponential_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+exponential_ease_out(T, A) ->
+    exponential_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec exponential_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+exponential_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec linear_interpolation(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+linear_interpolation(T, A) ->
+    linear_interpolation_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec linear_interpolation_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+linear_interpolation_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quadratic_ease_in(T, A) ->
+    quadratic_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quadratic_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quadratic_ease_in_out(T, A) ->
+    quadratic_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quadratic_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quadratic_ease_out(T, A) ->
+    quadratic_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quadratic_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quadratic_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quartic_ease_in(T, A) ->
+    quartic_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quartic_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quartic_ease_in_out(T, A) ->
+    quartic_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quartic_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quartic_ease_out(T, A) ->
+    quartic_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quartic_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quartic_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quintic_ease_in(T, A) ->
+    quintic_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quintic_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quintic_ease_in_out(T, A) ->
+    quintic_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quintic_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+quintic_ease_out(T, A) ->
+    quintic_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec quintic_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+quintic_ease_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_in(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+sine_ease_in(T, A) ->
+    sine_ease_in_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_in_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+sine_ease_in_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_in_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+sine_ease_in_out(T, A) ->
+    sine_ease_in_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_in_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+sine_ease_in_out_raw(_T, _A) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_out(
+    T :: glm:type(),
+    A :: binary()
+) -> binary().
+sine_ease_out(T, A) ->
+    sine_ease_out_raw(?GLM_TYPE(T), A).
+
+-doc("""
+To be written.
+""").
+-spec sine_ease_out_raw(
+    T :: integer(),
+    A :: binary()
+) -> binary().
+sine_ease_out_raw(_T, _A) ->
     erlang:nif_error(beam_glm_not_loaded).
