@@ -33,15 +33,6 @@
     assert_scalar/2,
     assert_scalar/3
 ]).
--export([
-    assert_vec2/3,
-    assert_vec3/3,
-    assert_vec4/3
-]).
--export([
-    assert_vec/3,
-    assert_vec/4
-]).
 
 valid_value(bool) ->
     boolean();
