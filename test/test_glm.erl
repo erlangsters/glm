@@ -33,6 +33,15 @@
     assert_scalar/2,
     assert_scalar/3
 ]).
+-export([
+    assert_vec2/3,
+    assert_vec3/3,
+    assert_vec4/3
+]).
+-export([
+    assert_vec/3,
+    assert_vec/4
+]).
 
 valid_value(bool) ->
     boolean();
@@ -240,6 +249,100 @@ assert_scalar(T, V, Expected) ->
     end,
 
     ok.
+
+assert_vec2(T, V) ->
+    {vec, 2, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 2, D),
+    ok.
+
+assert_vec2(T, V, {X, Y}) ->
+    {vec, 2, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 2, D),
+    case T of
+        float ->
+            ?assert(erlang:abs(glm:vec2_x(V) - X) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec2_y(V) - Y) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(glm:vec2_x(V) - X) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec2_y(V) - Y) < 1.0e-12);
+        _ ->
+            ?assertEqual(X, glm:vec2_x(V)),
+            ?assertEqual(Y, glm:vec2_y(V))
+    end,
+
+    ok.
+
+assert_vec3(T, V) ->
+    {vec, 3, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 3, D),
+    ok.
+
+assert_vec3(T, V, {X, Y, Z}) ->
+    {vec, 3, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 3, D),
+    case T of
+        float ->
+            ?assert(erlang:abs(glm:vec3_x(V) - X) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec3_y(V) - Y) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec3_z(V) - Z) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(glm:vec3_x(V) - X) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec3_y(V) - Y) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec3_z(V) - Z) < 1.0e-12);
+        _ ->
+            ?assertEqual(X, glm:vec3_x(V)),
+            ?assertEqual(Y, glm:vec3_y(V)),
+            ?assertEqual(Z, glm:vec3_z(V))
+    end,
+
+    ok.
+
+assert_vec4(T, V) ->
+    {vec, 4, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 4, D),
+    ok.
+
+assert_vec4(T, V, {X, Y, Z, W}) ->
+    {vec, 4, T, D} = V,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 4, D),
+    case T of
+        float ->
+            ?assert(erlang:abs(glm:vec4_x(V) - X) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec4_y(V) - Y) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec4_z(V) - Z) < 1.0e-9),
+            ?assert(erlang:abs(glm:vec4_w(V) - W) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(glm:vec4_x(V) - X) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec4_y(V) - Y) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec4_z(V) - Z) < 1.0e-12),
+            ?assert(erlang:abs(glm:vec4_w(V) - W) < 1.0e-12);
+        _ ->
+            ?assertEqual(X, glm:vec4_x(V)),
+            ?assertEqual(Y, glm:vec4_y(V)),
+            ?assertEqual(Z, glm:vec4_z(V)),
+            ?assertEqual(W, glm:vec4_w(V))
+    end,
+    ok.
+
+assert_vec(T, L, V) ->
+    case L of
+        2 -> assert_vec2(T, V);
+        3 -> assert_vec3(T, V);
+        4 -> assert_vec4(T, V)
+    end.
+
+assert_vec(T, L, V, Expected) ->
+    case L of
+        2 -> assert_vec2(T, V, Expected);
+        3 -> assert_vec3(T, V, Expected);
+        4 -> assert_vec4(T, V, Expected)
+    end.
 
 assert_byte_size(T, N, D) ->
     ByteSize = case T of
