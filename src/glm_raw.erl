@@ -63,9 +63,9 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
     vec4_w/2, vec4_set_w/3
 ]}).
 -compile({inline, [
-    clamp/6
+    clamp/6,
+    round/3
 ]}).
-
 -export([
     bool/0, bool/1,
     bool_value/1
@@ -115,11 +115,12 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
     vec4_w/2, vec4_set_w/3
 ]).
 -export([
-    clamp/6
+    clamp/6,
+    round/3
 ]).
-
 -nifs([
-    clamp_raw/6
+    clamp_raw/6,
+    round_raw/3
 ]).
 
 -on_load(glm_init/0).
@@ -2601,4 +2602,26 @@ To be written.
     X :: binary(), MinVal :: binary(), MaxVal :: binary()
 ) -> binary().
 clamp_raw(_T, _L, _Pattern, _X, _MinVal, _MaxVal) ->
+    erlang:nif_error(beam_glm_not_loaded).
+
+-doc("""
+To be written.
+""").
+-spec round(
+    T :: glm:type(),
+    L :: glm:length(),
+    X :: binary()
+) -> binary().
+round(T, L, X) ->
+    round_raw(?GLM_TYPE(T), L, X).
+
+-doc("""
+To be written.
+""").
+-spec round_raw(
+    T :: integer(),
+    L :: glm:length(),
+    X :: binary()
+) -> binary().
+round_raw(_T, _L, _X) ->
     erlang:nif_error(beam_glm_not_loaded).

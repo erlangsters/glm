@@ -24,3 +24,8 @@ template<int L, typename T>
 inline void beam_clamp_vvv(const ErlNifBinary& input_x, const ErlNifBinary& input_min, const ErlNifBinary& input_max, ErlNifBinary& output) {
     *(glm::vec<L, T, glm::defaultp>*)output.data = glm::clamp(*(const glm::vec<L, T, glm::defaultp>*)input_x.data, *(const glm::vec<L, T, glm::defaultp>*)input_min.data, *(const glm::vec<L, T, glm::defaultp>*)input_max.data);
 }
+
+template<int L, typename T>
+inline void beam_round(const ErlNifBinary& input, ErlNifBinary& output) {
+    *(glm::vec<L, T, glm::defaultp>*)output.data = glm::round(*(const glm::vec<L, T, glm::defaultp>*)input.data);
+}

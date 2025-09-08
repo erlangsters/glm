@@ -103,3 +103,33 @@ prop_clamp() ->
             true
         end
     ).
+
+round_test() ->
+    R1 = glm:round(glm:vec2(float, 0.1, 0.9)),
+    0.0 = glm:vec2_x(R1),
+    1.0 = glm:vec2_y(R1),
+    R2 = glm:round(glm:vec2(double, 0.1, 0.9)),
+    0.0 = glm:vec2_x(R2),
+    1.0 = glm:vec2_y(R2),
+
+    R3 = glm:round(glm:vec3(float, 0.1, 0.9, 0.1)),
+    0.0 = glm:vec3_x(R3),
+    1.0 = glm:vec3_y(R3),
+    0.0 = glm:vec3_z(R3),
+    R4 = glm:round(glm:vec3(double, 0.1, 0.9, 0.1)),
+    0.0 = glm:vec3_x(R4),
+    1.0 = glm:vec3_y(R4),
+    0.0 = glm:vec3_z(R4),
+
+    R5 = glm:round(glm:vec4(float, 0.1, 0.9, 0.1, 0.9)),
+    0.0 = glm:vec4_x(R5),
+    1.0 = glm:vec4_y(R5),
+    0.0 = glm:vec4_z(R5),
+    1.0 = glm:vec4_w(R5),
+    R6 = glm:round(glm:vec4(double, 0.1, 0.9, 0.1, 0.9)),
+    0.0 = glm:vec4_x(R6),
+    1.0 = glm:vec4_y(R6),
+    0.0 = glm:vec4_z(R6),
+    1.0 = glm:vec4_w(R6),
+
+    ok.

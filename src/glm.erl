@@ -92,7 +92,8 @@ OpenGL Mathematics (GLM) for the BEAM.
     vec4_w/1, vec4_set_w/2
 ]).
 -export([
-    clamp/3
+    clamp/3,
+    round/1
 ]).
 
 -include("glm.hrl").
@@ -754,4 +755,14 @@ clamp({vec, L, T, D1}, {vec, L, T, D2}, {vec, L, T, D3}) ->
         {vector, vector, vector},
         D1, D2, D3
     ),
+    {vec, L, T, R}.
+
+-doc("""
+To be written.
+""").
+-spec
+    round(vec(L, T)) -> vec(L, T) when T :: float | double, L :: length()
+.
+round({vec, L, T, D}) when T =:= float; T =:= double ->
+    R = glm_raw:round(T, L, D),
     {vec, L, T, R}.
