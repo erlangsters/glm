@@ -13,6 +13,9 @@
 -include_lib("glm/include/glm.hrl").
 
 -export([
+    gen_type/0
+]).
+-export([
     valid_value/1,
     invalid_value/1
 ]).
@@ -42,6 +45,15 @@
     assert_vec/3,
     assert_vec/4
 ]).
+
+gen_type() ->
+    oneof([
+        bool,
+        {int, 8}, {int, 16}, {int, 32}, {int, 64},
+        {uint, 8}, {uint, 16}, {uint, 32}, {uint, 64},
+        float,
+        double
+    ]).
 
 valid_value(bool) ->
     boolean();
