@@ -17,6 +17,10 @@
     gen_vec_length/0
 ]).
 -export([
+    gen_scalar/1,
+    gen_vec/2
+]).
+-export([
     valid_value/1,
     invalid_value/1
 ]).
@@ -47,9 +51,6 @@
     assert_vec/4
 ]).
 
-gen_vec_length() ->
-    oneof([2, 3, 4]).
-
 gen_type() ->
     oneof([
         bool,
@@ -58,6 +59,38 @@ gen_type() ->
         float,
         double
     ]).
+
+gen_vec_length() ->
+    oneof([2, 3, 4]).
+
+gen_scalar(T) ->
+    ?LET(
+        V,
+        valid_value(T),
+        glm:scalar(T, V)
+    ).
+
+gen_vec(T, L) ->
+    case L of
+        2 ->
+            ?LET(
+                {X, Y},
+                {valid_value(T), valid_value(T)},
+                glm:vec2(T, X, Y)
+            );
+        3 ->
+            ?LET(
+                {X, Y, Z},
+                {valid_value(T), valid_value(T), valid_value(T)},
+                glm:vec3(T, X, Y, Z)
+            );
+        4 ->
+            ?LET(
+                {X, Y, Z, W},
+                {valid_value(T), valid_value(T), valid_value(T), valid_value(T)},
+                glm:vec4(T, X, Y, Z, W)
+            )
+    end.
 
 valid_value(bool) ->
     boolean();
