@@ -63,7 +63,7 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
     vec4_w/2, vec4_set_w/3
 ]}).
 -compile({inline, [
-    foo/0
+    clamp/6
 ]}).
 
 -export([
@@ -115,14 +115,44 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
     vec4_w/2, vec4_set_w/3
 ]).
 -export([
-    foo/0
+    clamp/6
 ]).
 
 -nifs([
-    foo/0
+    clamp_raw/6
 ]).
 
 -on_load(glm_init/0).
+
+-define(GLM_BOOL, 1).
+-define(GLM_INT8, 2).
+-define(GLM_INT16, 3).
+-define(GLM_INT32, 4).
+-define(GLM_INT64, 5).
+-define(GLM_UINT8, 6).
+-define(GLM_UINT16, 7).
+-define(GLM_UINT32, 8).
+-define(GLM_UINT64, 9).
+-define(GLM_FLOAT, 10).
+-define(GLM_DOUBLE, 11).
+
+-define(GLM_TYPE(T),
+    begin
+        case T of
+            bool -> ?GLM_BOOL;
+            {int, 8} -> ?GLM_INT8;
+            {int, 16} -> ?GLM_INT16;
+            {int, 32} -> ?GLM_INT32;
+            {int, 64} -> ?GLM_INT64;
+            {uint, 8} -> ?GLM_UINT8;
+            {uint, 16} -> ?GLM_UINT16;
+            {uint, 32} -> ?GLM_UINT32;
+            {uint, 64} -> ?GLM_UINT64;
+            float -> ?GLM_FLOAT;
+            double -> ?GLM_DOUBLE
+        end
+    end
+).
 
 glm_init() ->
     LibName = "beam-glm",
@@ -2543,6 +2573,32 @@ vec4_set_w(double, D, W) ->
 -doc("""
 To be written.
 """).
--spec foo() -> ok.
-foo() ->
-    ok.
+-spec clamp(
+    T :: glm:type(),
+    L :: undefined | glm:length(),
+    Pattern :: {scalar, scalar, scalar} | {vector, scalar, scalar} | {vector, vector, vector},
+    X :: binary(), MinVal :: binary(), MaxVal :: binary()
+) -> binary().
+clamp(T, L, Pattern, X, MinVal, MaxVal) ->
+    clamp_raw(
+        ?GLM_TYPE(T),
+        L,
+        case Pattern of
+            {scalar, scalar, scalar} -> 0;
+            {vector, scalar, scalar} -> 1;
+            {vector, vector, vector} -> 2
+        end,
+        X, MinVal, MaxVal
+    ).
+
+-doc("""
+To be written.
+""").
+-spec clamp_raw(
+    T :: integer(),
+    L :: undefined | glm:length(),
+    Pattern :: integer(),
+    X :: binary(), MinVal :: binary(), MaxVal :: binary()
+) -> binary().
+clamp_raw(_T, _L, _Pattern, _X, _MinVal, _MaxVal) ->
+    erlang:nif_error(beam_glm_not_loaded).

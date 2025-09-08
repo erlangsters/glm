@@ -92,7 +92,7 @@ OpenGL Mathematics (GLM) for the BEAM.
     vec4_w/1, vec4_set_w/2
 ]).
 -export([
-    foo/0
+    clamp/3
 ]).
 
 -include("glm.hrl").
@@ -726,6 +726,32 @@ vec4_set_w({vec, 4, T, D}, W) ->
 -doc("""
 To be written.
 """).
--spec foo() -> ok.
-foo() ->
-    glm_raw:foo().
+% -spec % XXXXXX: constraint T to float double and int ????
+%     clamp(scalar(T), scalar(T), scalar(T)) -> scalar(T) when T :: float | double | int; 
+%     clamp(vec(L, T), scalar(T), scalar(T)) -> vec(L, T) when T :: float | double | int, L :: length();
+%     clamp(vec(L, T), vec(L, T), vec(L, T)) -> vec(L, T) when T :: float | double | int, L :: length()
+% .
+clamp({scalar, T, D1}, {scalar, T, D2}, {scalar, T, D3}) ->
+    R = glm_raw:clamp(
+        T,
+        undefined,
+        {scalar, scalar, scalar},
+        D1, D2, D3
+    ),
+    {scalar, T, R};
+clamp({vec, L, T, D1}, {scalar, T, D2}, {scalar, T, D3}) ->
+    R = glm_raw:clamp(
+        T,
+        L,
+        {vector, scalar, scalar},
+        D1, D2, D3
+    ),
+    {vec, L, T, R};
+clamp({vec, L, T, D1}, {vec, L, T, D2}, {vec, L, T, D3}) ->
+    R = glm_raw:clamp(
+        T,
+        L,
+        {vector, vector, vector},
+        D1, D2, D3
+    ),
+    {vec, L, T, R}.
