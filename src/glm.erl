@@ -8,6 +8,9 @@
 %% Written by Jonathan De Wachter <jonathan.dewachter@byteplug.io>
 %%
 -module(glm).
+-moduledoc """
+OpenGL Mathematics (GLM) for the BEAM.
+""".
 
 -compile({nowarn_redefined_builtin_type, [bool/0, float/0]}).
 

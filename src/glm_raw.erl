@@ -8,6 +8,9 @@
 %% Written by Jonathan De Wachter <jonathan.dewachter@byteplug.io>
 %%
 -module(glm_raw).
+-moduledoc """
+OpenGL Mathematics (GLM) for the BEAM (raw).
+""".
 
 -compile({inline, [
     bool/0, bool/1,
