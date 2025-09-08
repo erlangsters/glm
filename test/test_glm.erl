@@ -13,7 +13,8 @@
 -include_lib("glm/include/glm.hrl").
 
 -export([
-    gen_type/0
+    gen_type/0,
+    gen_vec_length/0
 ]).
 -export([
     valid_value/1,
@@ -45,6 +46,9 @@
     assert_vec/3,
     assert_vec/4
 ]).
+
+gen_vec_length() ->
+    oneof([2, 3, 4]).
 
 gen_type() ->
     oneof([
