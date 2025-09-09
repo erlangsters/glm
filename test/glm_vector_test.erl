@@ -134,11 +134,30 @@ prop_vec2(T) ->
             ?assertInvalidValue(T, InvalidValue, glm:vec2(T, InvalidValue)),
             ?assertInvalidValue(T, InvalidValue, glm:vec2(T, X, InvalidValue)),
             ?assertInvalidValue(T, InvalidValue, glm:vec2(T, InvalidValue, Y)),
-            Vec = glm:vec2(T, V1),
-            ok = test_glm:assert_vec2(T, glm:vec2_set_x(Vec, V2), {V2, V1}),
-            ok = test_glm:assert_vec2(T, glm:vec2_set_y(Vec, V2), {V1, V2}),
-            ?assertInvalidValue(T, InvalidValue, glm:vec2_set_x(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec2_set_y(Vec, InvalidValue)),
+
+            A = glm:vec2(T, X, Y),
+            case T of
+                float ->
+                    ?assert(erlang:abs(glm:vec2_x(A) - X) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec2_y(A) - Y) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec2_values(A)) - X) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec2_values(A)) - Y) < 1.0e-9);
+                double ->
+                    ?assert(erlang:abs(glm:vec2_x(A) - X) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec2_y(A) - Y) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec2_values(A)) - X) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec2_values(A)) - Y) < 1.0e-12);
+                _ ->
+                    X = glm:vec2_x(A),
+                    Y = glm:vec2_y(A),
+                    {X, Y} = glm:vec2_values(A)
+            end,
+
+            B = glm:vec2(T, V1),
+            ok = test_glm:assert_vec2(T, glm:vec2_set_x(B, V2), {V2, V1}),
+            ok = test_glm:assert_vec2(T, glm:vec2_set_y(B, V2), {V1, V2}),
+            ?assertInvalidValue(T, InvalidValue, glm:vec2_set_x(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec2_set_y(B, InvalidValue)),
             true
         end
     ).
@@ -159,13 +178,37 @@ prop_vec3(T) ->
             ?assertInvalidValue(T, InvalidValue, glm:vec3(T, X, Y, InvalidValue)),
             ?assertInvalidValue(T, InvalidValue, glm:vec3(T, X, InvalidValue, Z)),
             ?assertInvalidValue(T, InvalidValue, glm:vec3(T, InvalidValue, Y, Z)),
-            Vec = glm:vec3(T, V1),
-            ok = test_glm:assert_vec3(T, glm:vec3_set_x(Vec, V2), {V2, V1, V1}),
-            ok = test_glm:assert_vec3(T, glm:vec3_set_y(Vec, V2), {V1, V2, V1}),
-            ok = test_glm:assert_vec3(T, glm:vec3_set_z(Vec, V2), {V1, V1, V2}),
-            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_x(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_y(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_z(Vec, InvalidValue)),
+
+            A = glm:vec3(T, X, Y, Z),
+            case T of
+                float ->
+                    ?assert(erlang:abs(glm:vec3_x(A) - X) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec3_y(A) - Y) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec3_z(A) - Z) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec3_values(A)) - X) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec3_values(A)) - Y) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(3, glm:vec3_values(A)) - Z) < 1.0e-9);
+                double ->
+                    ?assert(erlang:abs(glm:vec3_x(A) - X) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec3_y(A) - Y) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec3_z(A) - Z) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec3_values(A)) - X) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec3_values(A)) - Y) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(3, glm:vec3_values(A)) - Z) < 1.0e-12);
+                _ ->
+                    X = glm:vec3_x(A),
+                    Y = glm:vec3_y(A),
+                    Z = glm:vec3_z(A),
+                    {X, Y, Z} = glm:vec3_values(A)
+            end,
+
+            B = glm:vec3(T, V1),
+            ok = test_glm:assert_vec3(T, glm:vec3_set_x(B, V2), {V2, V1, V1}),
+            ok = test_glm:assert_vec3(T, glm:vec3_set_y(B, V2), {V1, V2, V1}),
+            ok = test_glm:assert_vec3(T, glm:vec3_set_z(B, V2), {V1, V1, V2}),
+            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_x(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_y(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec3_set_z(B, InvalidValue)),
             true
         end
     ).
@@ -188,15 +231,44 @@ prop_vec4(T) ->
             ?assertInvalidValue(T, InvalidValue, glm:vec4(T, X, Y, InvalidValue, W)),
             ?assertInvalidValue(T, InvalidValue, glm:vec4(T, X, InvalidValue, Z, W)),
             ?assertInvalidValue(T, InvalidValue, glm:vec4(T, InvalidValue, Y, Z, W)),
-            Vec = glm:vec4(T, V1),
-            ok = test_glm:assert_vec4(T, glm:vec4_set_x(Vec, V2), {V2, V1, V1, V1}),
-            ok = test_glm:assert_vec4(T, glm:vec4_set_y(Vec, V2), {V1, V2, V1, V1}),
-            ok = test_glm:assert_vec4(T, glm:vec4_set_z(Vec, V2), {V1, V1, V2, V1}),
-            ok = test_glm:assert_vec4(T, glm:vec4_set_w(Vec, V2), {V1, V1, V1, V2}),
-            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_x(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_y(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_z(Vec, InvalidValue)),
-            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_w(Vec, InvalidValue)),
+
+            A = glm:vec4(T, X, Y, Z, W),
+            case T of
+                float ->
+                    ?assert(erlang:abs(glm:vec4_x(A) - X) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec4_y(A) - Y) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec4_z(A) - Z) < 1.0e-9),
+                    ?assert(erlang:abs(glm:vec4_w(A) - W) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec4_values(A)) - X) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec4_values(A)) - Y) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(3, glm:vec4_values(A)) - Z) < 1.0e-9),
+                    ?assert(erlang:abs(erlang:element(4, glm:vec4_values(A)) - W) < 1.0e-9);
+                double ->
+                    ?assert(erlang:abs(glm:vec4_x(A) - X) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec4_y(A) - Y) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec4_z(A) - Z) < 1.0e-12),
+                    ?assert(erlang:abs(glm:vec4_w(A) - W) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(1, glm:vec4_values(A)) - X) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(2, glm:vec4_values(A)) - Y) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(3, glm:vec4_values(A)) - Z) < 1.0e-12),
+                    ?assert(erlang:abs(erlang:element(4, glm:vec4_values(A)) - W) < 1.0e-12);
+                _ ->
+                    X = glm:vec4_x(A),
+                    Y = glm:vec4_y(A),
+                    Z = glm:vec4_z(A),
+                    W = glm:vec4_w(A),
+                    {X, Y, Z, W} = glm:vec4_values(A)
+            end,
+
+            B = glm:vec4(T, V1),
+            ok = test_glm:assert_vec4(T, glm:vec4_set_x(B, V2), {V2, V1, V1, V1}),
+            ok = test_glm:assert_vec4(T, glm:vec4_set_y(B, V2), {V1, V2, V1, V1}),
+            ok = test_glm:assert_vec4(T, glm:vec4_set_z(B, V2), {V1, V1, V2, V1}),
+            ok = test_glm:assert_vec4(T, glm:vec4_set_w(B, V2), {V1, V1, V1, V2}),
+            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_x(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_y(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_z(B, InvalidValue)),
+            ?assertInvalidValue(T, InvalidValue, glm:vec4_set_w(B, InvalidValue)),
             true
         end
     ).

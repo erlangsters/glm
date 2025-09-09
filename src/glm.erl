@@ -76,20 +76,23 @@ OpenGL Mathematics (GLM) for the BEAM.
 -export([
     vec2/1, vec2/2, vec2/3,
     vec2_x/1, vec2_set_x/2,
-    vec2_y/1, vec2_set_y/2
+    vec2_y/1, vec2_set_y/2,
+    vec2_values/1
 ]).
 -export([
     vec3/1, vec3/2, vec3/4,
     vec3_x/1, vec3_set_x/2,
     vec3_y/1, vec3_set_y/2,
-    vec3_z/1, vec3_set_z/2
+    vec3_z/1, vec3_set_z/2,
+    vec3_values/1
 ]).
 -export([
     vec4/1, vec4/2, vec4/5,
     vec4_x/1, vec4_set_x/2,
     vec4_y/1, vec4_set_y/2,
     vec4_z/1, vec4_set_z/2,
-    vec4_w/1, vec4_set_w/2
+    vec4_w/1, vec4_set_w/2,
+    vec4_values/1
 ]).
 -export([
     clamp/3,
@@ -572,6 +575,13 @@ vec2_set_y({vec, 2, T, D}, Y) ->
 -doc("""
 To be written.
 """).
+-spec vec2_values(vec2(T)) -> {term(), term()} when T :: type().
+vec2_values({vec, 2, T, D}) ->
+    glm_raw:vec2_values(T, D).
+
+-doc("""
+To be written.
+""").
 -spec vec3(T) -> vec3(T) when T :: type().
 vec3(T) ->
     {vec, 3, T, glm_raw:vec3(T)}.
@@ -638,6 +648,13 @@ To be written.
 vec3_set_z({vec, 3, T, D}, Z) ->
     ?EXCEPTION_IF_INVALID_VALUE(Z, T),
     {vec, 3, T, glm_raw:vec3_set_z(T, D, Z)}.
+
+-doc("""
+To be written.
+""").
+-spec vec3_values(vec3(T)) -> {term(), term(), term()} when T :: type().
+vec3_values({vec, 3, T, D}) ->
+    glm_raw:vec3_values(T, D).
 
 -doc("""
 To be written.
@@ -724,6 +741,13 @@ To be written.
 vec4_set_w({vec, 4, T, D}, W) ->
     ?EXCEPTION_IF_INVALID_VALUE(W, T),
     {vec, 4, T, glm_raw:vec4_set_w(T, D, W)}.
+
+-doc("""
+To be written.
+""").
+-spec vec4_values(vec4(T)) -> {term(), term(), term(), term()} when T :: type().
+vec4_values({vec, 4, T, D}) ->
+    glm_raw:vec4_values(T, D).
 
 -doc("""
 To be written.

@@ -47,20 +47,23 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
 -compile({inline, [
     vec2/1, vec2/2, vec2/3,
     vec2_x/2, vec2_set_x/3,
-    vec2_y/2, vec2_set_y/3
+    vec2_y/2, vec2_set_y/3,
+    vec2_values/2
 ]}).
 -compile({inline, [
     vec3/1, vec3/2, vec3/4,
     vec3_x/2, vec3_set_x/3,
     vec3_y/2, vec3_set_y/3,
-    vec3_z/2, vec3_set_z/3
+    vec3_z/2, vec3_set_z/3,
+    vec3_values/2
 ]}).
 -compile({inline, [
     vec4/1, vec4/2, vec4/5,
     vec4_x/2, vec4_set_x/3,
     vec4_y/2, vec4_set_y/3,
     vec4_z/2, vec4_set_z/3,
-    vec4_w/2, vec4_set_w/3
+    vec4_w/2, vec4_set_w/3,
+    vec4_values/2
 ]}).
 -compile({inline, [
     clamp/6,
@@ -100,20 +103,23 @@ OpenGL Mathematics (GLM) for the BEAM (raw).
 -export([
     vec2/1, vec2/2, vec2/3,
     vec2_x/2, vec2_set_x/3,
-    vec2_y/2, vec2_set_y/3
+    vec2_y/2, vec2_set_y/3,
+    vec2_values/2
 ]).
 -export([
     vec3/1, vec3/2, vec3/4,
     vec3_x/2, vec3_set_x/3,
     vec3_y/2, vec3_set_y/3,
-    vec3_z/2, vec3_set_z/3
+    vec3_z/2, vec3_set_z/3,
+    vec3_values/2
 ]).
 -export([
     vec4/1, vec4/2, vec4/5,
     vec4_x/2, vec4_set_x/3,
     vec4_y/2, vec4_set_y/3,
     vec4_z/2, vec4_set_z/3,
-    vec4_w/2, vec4_set_w/3
+    vec4_w/2, vec4_set_w/3,
+    vec4_values/2
 ]).
 -export([
     clamp/6,
@@ -946,6 +952,77 @@ vec2_set_y(double, D, Y) ->
 -doc("""
 To be written.
 """).
+-spec vec2_values(glm:type(), binary()) -> {term(), term()}.
+vec2_values(bool, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer
+    >> = D,
+    {X =/= 0, Y =/= 0};
+vec2_values({int, 8}, D) ->
+    <<
+        X:8/little-signed-integer,
+        Y:8/little-signed-integer
+    >> = D,
+    {X, Y};
+vec2_values({int, 16}, D) ->
+    <<
+        X:16/little-signed-integer,
+        Y:16/little-signed-integer
+    >> = D,
+    {X, Y};
+vec2_values({int, 32}, D) ->
+    <<
+        X:32/little-signed-integer,
+        Y:32/little-signed-integer
+    >> = D,
+    {X, Y};
+vec2_values({int, 64}, D) ->
+    <<
+        X:64/little-signed-integer,
+        Y:64/little-signed-integer
+    >> = D,
+    {X, Y};
+vec2_values({uint, 8}, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer
+    >> = D,
+    {X, Y};
+vec2_values({uint, 16}, D) ->
+    <<
+        X:16/little-unsigned-integer,
+        Y:16/little-unsigned-integer
+    >> = D,
+    {X, Y};
+vec2_values({uint, 32}, D) ->
+    <<
+        X:32/little-unsigned-integer,
+        Y:32/little-unsigned-integer
+    >> = D,
+    {X, Y};
+vec2_values({uint, 64}, D) ->
+    <<
+        X:64/little-unsigned-integer,
+        Y:64/little-unsigned-integer
+    >> = D,
+    {X, Y};
+vec2_values(float, D) ->
+    <<
+        X:32/little-float,
+        Y:32/little-float
+    >> = D,
+    {X, Y};
+vec2_values(double, D) ->
+    <<
+        X:64/little-float,
+        Y:64/little-float
+    >> = D,
+    {X, Y}.
+
+-doc("""
+To be written.
+""").
 -spec vec3(glm:type()) -> binary().
 vec3(bool) ->
     <<
@@ -1647,6 +1724,88 @@ vec3_set_z(double, D, Z) ->
         _Z:64/little-float
     >> = D,
     <<X:64/little-float, Y:64/little-float, Z:64/little-float>>.
+
+-doc("""
+To be written.
+""").
+-spec vec3_values(glm:type(), binary()) -> {term(), term(), term()}.
+vec3_values(bool, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer,
+        Z:8/little-unsigned-integer
+    >> = D,
+    {X =/= 0, Y =/= 0, Z =/= 0};
+vec3_values({int, 8}, D) ->
+    <<
+        X:8/little-signed-integer,
+        Y:8/little-signed-integer,
+        Z:8/little-signed-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({int, 16}, D) ->
+    <<
+        X:16/little-signed-integer,
+        Y:16/little-signed-integer,
+        Z:16/little-signed-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({int, 32}, D) ->
+    <<
+        X:32/little-signed-integer,
+        Y:32/little-signed-integer,
+        Z:32/little-signed-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({int, 64}, D) ->
+    <<
+        X:64/little-signed-integer,
+        Y:64/little-signed-integer,
+        Z:64/little-signed-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({uint, 8}, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer,
+        Z:8/little-unsigned-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({uint, 16}, D) ->
+    <<
+        X:16/little-unsigned-integer,
+        Y:16/little-unsigned-integer,
+        Z:16/little-unsigned-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({uint, 32}, D) ->
+    <<
+        X:32/little-unsigned-integer,
+        Y:32/little-unsigned-integer,
+        Z:32/little-unsigned-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values({uint, 64}, D) ->
+    <<
+        X:64/little-unsigned-integer,
+        Y:64/little-unsigned-integer,
+        Z:64/little-unsigned-integer
+    >> = D,
+    {X, Y, Z};
+vec3_values(float, D) ->
+    <<
+        X:32/little-float,
+        Y:32/little-float,
+        Z:32/little-float
+    >> = D,
+    {X, Y, Z};
+vec3_values(double, D) ->
+    <<
+        X:64/little-float,
+        Y:64/little-float,
+        Z:64/little-float
+    >> = D,
+    {X, Y, Z}.
 
 -doc("""
 To be written.
@@ -2637,6 +2796,99 @@ vec4_set_w(double, D, W) ->
         _W:64/little-float
     >> = D,
     <<X:64/little-float, Y:64/little-float, Z:64/little-float, W:64/little-float>>.
+
+-doc("""
+To be written.
+""").
+-spec vec4_values(glm:type(), binary()) -> {term(), term(), term(), term()}.
+vec4_values(bool, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer,
+        Z:8/little-unsigned-integer,
+        W:8/little-unsigned-integer
+    >> = D,
+    {(X =/= 0), (Y =/= 0), (Z =/= 0), (W =/= 0)};
+vec4_values({int, 8}, D) ->
+    <<
+        X:8/little-signed-integer,
+        Y:8/little-signed-integer,
+        Z:8/little-signed-integer,
+        W:8/little-signed-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({int, 16}, D) ->
+    <<
+        X:16/little-signed-integer,
+        Y:16/little-signed-integer,
+        Z:16/little-signed-integer,
+        W:16/little-signed-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({int, 32}, D) ->
+    <<
+        X:32/little-signed-integer,
+        Y:32/little-signed-integer,
+        Z:32/little-signed-integer,
+        W:32/little-signed-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({int, 64}, D) ->
+    <<
+        X:64/little-signed-integer,
+        Y:64/little-signed-integer,
+        Z:64/little-signed-integer,
+        W:64/little-signed-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({uint, 8}, D) ->
+    <<
+        X:8/little-unsigned-integer,
+        Y:8/little-unsigned-integer,
+        Z:8/little-unsigned-integer,
+        W:8/little-unsigned-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({uint, 16}, D) ->
+    <<
+        X:16/little-unsigned-integer,
+        Y:16/little-unsigned-integer,
+        Z:16/little-unsigned-integer,
+        W:16/little-unsigned-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({uint, 32}, D) ->
+    <<
+        X:32/little-unsigned-integer,
+        Y:32/little-unsigned-integer,
+        Z:32/little-unsigned-integer,
+        W:32/little-unsigned-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values({uint, 64}, D) ->
+    <<
+        X:64/little-unsigned-integer,
+        Y:64/little-unsigned-integer,
+        Z:64/little-unsigned-integer,
+        W:64/little-unsigned-integer
+    >> = D,
+    {X, Y, Z, W};
+vec4_values(float, D) ->
+    <<
+        X:32/little-float,
+        Y:32/little-float,
+        Z:32/little-float,
+        W:32/little-float
+    >> = D,
+    {X, Y, Z, W};
+vec4_values(double, D) ->
+    <<
+        X:64/little-float,
+        Y:64/little-float,
+        Z:64/little-float,
+        W:64/little-float
+    >> = D,
+    {X, Y, Z, W}.
 
 -doc("""
 To be written.
