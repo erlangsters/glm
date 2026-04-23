@@ -4,7 +4,7 @@
 ![Supported Erlang/OTP Versions](https://img.shields.io/badge/erlang%2Fotp-28-%23a90432)
 ![Current Version](https://img.shields.io/badge/version-0.1.0-%23354052)
 ![License](https://img.shields.io/github/license/erlangsters/glm)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/erlangsters/glm/workflow.yml)](https://github.com/erlangsters/glm/actions/workflows/workflow.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/erlangsters/glm/build.yml)](https://github.com/erlangsters/glm/actions/workflows/build.yml)
 [![Documentation Link](https://img.shields.io/badge/documentation-available-yellow)](http://erlangsters.github.io/glm/)
 
 The binding of [GLM](https://github.com/g-truc/glm) for the Erlang and Elixir
