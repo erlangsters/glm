@@ -1,5 +1,5 @@
 %%
-%% Copyright (c) 2025, Byteplug LLC.
+%% Copyright (c) 2026, Byteplug LLC.
 %%
 %% This source file is part of a project made by the Erlangsters community and
 %% is released under the MIT license. Please refer to the LICENSE.md file that
@@ -47,8 +47,24 @@
     assert_vec4/3
 ]).
 -export([
+    assert_quat/3
+]).
+-export([
     assert_vec/3,
     assert_vec/4
+]).
+-export([
+    assert_mat2/3,
+    assert_mat3/3,
+    assert_mat4/3
+]).
+-export([
+    assert_mat2x3/3,
+    assert_mat2x4/3,
+    assert_mat3x2/3,
+    assert_mat3x4/3,
+    assert_mat4x2/3,
+    assert_mat4x3/3
 ]).
 
 gen_type() ->
@@ -267,14 +283,24 @@ assert_float(S, V) ->
     {scalar, float, D} = S,
     ?assert(erlang:is_binary(D)),
     ok = assert_byte_size(float, 1, D),
+
+    % ?assertEqual(V, glm:float_value(S)),
     ?assert(erlang:abs(glm:float_value(S) - V) < 1.0e-9),
+
+    % 1.0e-7
+
     ok.
 
 assert_double(S, V) ->
     {scalar, double, D} = S,
     ?assert(erlang:is_binary(D)),
     ok = assert_byte_size(double, 1, D),
+    % ?assertEqual(V, glm:double_value(S)),
+
     ?assert(erlang:abs(glm:double_value(S) - V) < 1.0e-12),
+
+    % 1.0e-12
+
     ok.
 
 assert_scalar(T, V) ->
@@ -291,8 +317,8 @@ assert_scalar(T, V, Expected) ->
     case T of
         float ->
             ?assert(erlang:abs(glm:float_value(V) - Expected) < 1.0e-9);
-        double ->
-            ?assert(erlang:abs(glm:double_value(V) - Expected) < 1.0e-12);
+        % double ->
+        %     ?assert(erlang:abs(glm:double_value(V) - Expected) < 1.0e-12);
         _ ->
             ?assertEqual(Expected, glm:scalar_value(V))
     end,
@@ -392,6 +418,430 @@ assert_vec(T, L, V, Expected) ->
         3 -> assert_vec3(T, V, Expected);
         4 -> assert_vec4(T, V, Expected)
     end.
+
+assert_quat(T, Quaternion, {W, X, Y, Z}) ->
+    {quat, T, D} = Quaternion,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 4, D),
+    case T of
+        float ->
+            ?assert(erlang:abs(glm:quat_w(Quaternion) - W) < 1.0e-9),
+            ?assert(erlang:abs(glm:quat_x(Quaternion) - X) < 1.0e-9),
+            ?assert(erlang:abs(glm:quat_y(Quaternion) - Y) < 1.0e-9),
+            ?assert(erlang:abs(glm:quat_z(Quaternion) - Z) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(glm:quat_w(Quaternion) - W) < 1.0e-12),
+            ?assert(erlang:abs(glm:quat_x(Quaternion) - X) < 1.0e-12),
+            ?assert(erlang:abs(glm:quat_y(Quaternion) - Y) < 1.0e-12),
+            ?assert(erlang:abs(glm:quat_z(Quaternion) - Z) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat2(T, Matrix, Elements) ->
+    {
+        M11, M12,
+        M21, M22
+    } = Elements,
+    {mat, 2, 2, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 4, D),
+
+    E11 = glm:mat2_element(Matrix, 1, 1),
+    E12 = glm:mat2_element(Matrix, 2, 1),
+    E21 = glm:mat2_element(Matrix, 1, 2),
+    E22 = glm:mat2_element(Matrix, 2, 2),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat3(T, Matrix, Elements) ->
+    {
+        M11, M12, M13,
+        M21, M22, M23,
+        M31, M32, M33
+    } = Elements,
+    {mat, 3, 3, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 9, D),
+
+    E11 = glm:mat3_element(Matrix, 1, 1),
+    E12 = glm:mat3_element(Matrix, 2, 1),
+    E13 = glm:mat3_element(Matrix, 3, 1),
+    E21 = glm:mat3_element(Matrix, 1, 2),
+    E22 = glm:mat3_element(Matrix, 2, 2),
+    E23 = glm:mat3_element(Matrix, 3, 2),
+    E31 = glm:mat3_element(Matrix, 1, 3),
+    E32 = glm:mat3_element(Matrix, 2, 3),
+    E33 = glm:mat3_element(Matrix, 3, 3),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat4(T, Matrix, Elements) ->
+    {
+        M11, M12, M13, M14,
+        M21, M22, M23, M24,
+        M31, M32, M33, M34,
+        M41, M42, M43, M44
+    } = Elements,
+    {mat, 4, 4, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 16, D),
+
+    E11 = glm:mat4_element(Matrix, 1, 1),
+    E12 = glm:mat4_element(Matrix, 2, 1),
+    E13 = glm:mat4_element(Matrix, 3, 1),
+    E14 = glm:mat4_element(Matrix, 4, 1),
+    E21 = glm:mat4_element(Matrix, 1, 2),
+    E22 = glm:mat4_element(Matrix, 2, 2),
+    E23 = glm:mat4_element(Matrix, 3, 2),
+    E24 = glm:mat4_element(Matrix, 4, 2),
+    E31 = glm:mat4_element(Matrix, 1, 3),
+    E32 = glm:mat4_element(Matrix, 2, 3),
+    E33 = glm:mat4_element(Matrix, 3, 3),
+    E34 = glm:mat4_element(Matrix, 4, 3),
+    E41 = glm:mat4_element(Matrix, 1, 4),
+    E42 = glm:mat4_element(Matrix, 2, 4),
+    E43 = glm:mat4_element(Matrix, 3, 4),
+    E44 = glm:mat4_element(Matrix, 4, 4),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-9),
+            ?assert(erlang:abs(E34 - M34) < 1.0e-9),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-9),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-9),
+            ?assert(erlang:abs(E43 - M43) < 1.0e-9),
+            ?assert(erlang:abs(E44 - M44) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-12),
+            ?assert(erlang:abs(E34 - M34) < 1.0e-12),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-12),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-12),
+            ?assert(erlang:abs(E43 - M43) < 1.0e-12),
+            ?assert(erlang:abs(E44 - M44) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat2x3(T, Matrix, Elements) ->
+    {
+        M11, M12,
+        M21, M22,
+        M31, M32
+    } = Elements,
+    {mat, 2, 3, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 6, D),
+
+    E11 = glm:mat2x3_element(Matrix, 1, 1),
+    E12 = glm:mat2x3_element(Matrix, 2, 1),
+    E21 = glm:mat2x3_element(Matrix, 1, 2),
+    E22 = glm:mat2x3_element(Matrix, 2, 2),
+    E31 = glm:mat2x3_element(Matrix, 1, 3),
+    E32 = glm:mat2x3_element(Matrix, 2, 3),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat2x4(T, Matrix, Elements) ->
+    {
+        M11, M12,
+        M21, M22,
+        M31, M32,
+        M41, M42
+    } = Elements,
+    {mat, 2, 4, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 8, D),
+
+    E11 = glm:mat2x4_element(Matrix, 1, 1),
+    E12 = glm:mat2x4_element(Matrix, 2, 1),
+    E21 = glm:mat2x4_element(Matrix, 1, 2),
+    E22 = glm:mat2x4_element(Matrix, 2, 2),
+    E31 = glm:mat2x4_element(Matrix, 1, 3),
+    E32 = glm:mat2x4_element(Matrix, 2, 3),
+    E41 = glm:mat2x4_element(Matrix, 1, 4),
+    E42 = glm:mat2x4_element(Matrix, 2, 4),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-9),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-12),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat3x2(T, Matrix, Elements) ->
+    {
+        M11, M12, M13,
+        M21, M22, M23
+    } = Elements,
+    {mat, 3, 2, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 6, D),
+
+    E11 = glm:mat3x2_element(Matrix, 1, 1),
+    E12 = glm:mat3x2_element(Matrix, 2, 1),
+    E13 = glm:mat3x2_element(Matrix, 3, 1),
+    E21 = glm:mat3x2_element(Matrix, 1, 2),
+    E22 = glm:mat3x2_element(Matrix, 2, 2),
+    E23 = glm:mat3x2_element(Matrix, 3, 2),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat3x4(T, Matrix, Elements) ->
+    {
+        M11, M12, M13,
+        M21, M22, M23,
+        M31, M32, M33,
+        M41, M42, M43
+    } = Elements,
+    {mat, 3, 4, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 12, D),
+
+    E11 = glm:mat3x4_element(Matrix, 1, 1),
+    E12 = glm:mat3x4_element(Matrix, 2, 1),
+    E13 = glm:mat3x4_element(Matrix, 3, 1),
+    E21 = glm:mat3x4_element(Matrix, 1, 2),
+    E22 = glm:mat3x4_element(Matrix, 2, 2),
+    E23 = glm:mat3x4_element(Matrix, 3, 2),
+    E31 = glm:mat3x4_element(Matrix, 1, 3),
+    E32 = glm:mat3x4_element(Matrix, 2, 3),
+    E33 = glm:mat3x4_element(Matrix, 3, 3),
+    E41 = glm:mat3x4_element(Matrix, 1, 4),
+    E42 = glm:mat3x4_element(Matrix, 2, 4),
+    E43 = glm:mat3x4_element(Matrix, 3, 4),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-9),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-9),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-9),
+            ?assert(erlang:abs(E43 - M43) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-12),
+            ?assert(erlang:abs(E41 - M41) < 1.0e-12),
+            ?assert(erlang:abs(E42 - M42) < 1.0e-12),
+            ?assert(erlang:abs(E43 - M43) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat4x2(T, Matrix, Elements) ->
+    {
+        M11, M12, M13, M14,
+        M21, M22, M23, M24
+    } = Elements,
+    {mat, 4, 2, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 8, D),
+
+    E11 = glm:mat4x2_element(Matrix, 1, 1),
+    E12 = glm:mat4x2_element(Matrix, 2, 1),
+    E13 = glm:mat4x2_element(Matrix, 3, 1),
+    E14 = glm:mat4x2_element(Matrix, 4, 1),
+    E21 = glm:mat4x2_element(Matrix, 1, 2),
+    E22 = glm:mat4x2_element(Matrix, 2, 2),
+    E23 = glm:mat4x2_element(Matrix, 3, 2),
+    E24 = glm:mat4x2_element(Matrix, 4, 2),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-12)
+    end,
+
+    ok.
+
+assert_mat4x3(T, Matrix, Elements) ->
+    {
+        M11, M12, M13, M14,
+        M21, M22, M23, M24,
+        M31, M32, M33, M34
+    } = Elements,
+    {mat, 4, 3, T, D} = Matrix,
+    ?assert(erlang:is_binary(D)),
+    ok = assert_byte_size(T, 12, D),
+
+    E11 = glm:mat4x3_element(Matrix, 1, 1),
+    E12 = glm:mat4x3_element(Matrix, 2, 1),
+    E13 = glm:mat4x3_element(Matrix, 3, 1),
+    E14 = glm:mat4x3_element(Matrix, 4, 1),
+    E21 = glm:mat4x3_element(Matrix, 1, 2),
+    E22 = glm:mat4x3_element(Matrix, 2, 2),
+    E23 = glm:mat4x3_element(Matrix, 3, 2),
+    E24 = glm:mat4x3_element(Matrix, 4, 2),
+    E31 = glm:mat4x3_element(Matrix, 1, 3),
+    E32 = glm:mat4x3_element(Matrix, 2, 3),
+    E33 = glm:mat4x3_element(Matrix, 3, 3),
+    E34 = glm:mat4x3_element(Matrix, 4, 3),
+
+    case T of
+        float ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-9),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-9),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-9),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-9),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-9),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-9),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-9),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-9),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-9),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-9),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-9),
+            ?assert(erlang:abs(E34 - M34) < 1.0e-9);
+        double ->
+            ?assert(erlang:abs(E11 - M11) < 1.0e-12),
+            ?assert(erlang:abs(E12 - M12) < 1.0e-12),
+            ?assert(erlang:abs(E13 - M13) < 1.0e-12),
+            ?assert(erlang:abs(E14 - M14) < 1.0e-12),
+            ?assert(erlang:abs(E21 - M21) < 1.0e-12),
+            ?assert(erlang:abs(E22 - M22) < 1.0e-12),
+            ?assert(erlang:abs(E23 - M23) < 1.0e-12),
+            ?assert(erlang:abs(E24 - M24) < 1.0e-12),
+            ?assert(erlang:abs(E31 - M31) < 1.0e-12),
+            ?assert(erlang:abs(E32 - M32) < 1.0e-12),
+            ?assert(erlang:abs(E33 - M33) < 1.0e-12),
+            ?assert(erlang:abs(E34 - M34) < 1.0e-12)
+    end,
+
+    ok.
 
 assert_byte_size(T, N, D) ->
     ByteSize = case T of

@@ -1,5 +1,5 @@
 %%
-%% Copyright (c) 2025, Byteplug LLC.
+%% Copyright (c) 2026, Byteplug LLC.
 %%
 %% This source file is part of a project made by the Erlangsters community and
 %% is released under the MIT license. Please refer to the LICENSE.md file that
@@ -41,9 +41,11 @@ glm_scalar_test() ->
     ?assert(proper:quickcheck(prop_scalar({uint, 64}))),
 
     test_glm:assert_float(glm:scalar(float), 0.0),
+    ?assert(erlang:abs(glm:scalar_value(glm:scalar(float)) - 0.0) < 1.0e-9),
     ?assert(proper:quickcheck(prop_scalar(float))),
 
     test_glm:assert_double(glm:scalar(double), 0.0),
+    ?assert(erlang:abs(glm:scalar_value(glm:scalar(double)) - 0.0) < 1.0e-12),
     ?assert(proper:quickcheck(prop_scalar(double))),
 
     ok.
@@ -55,6 +57,14 @@ prop_scalar(T) ->
         begin
             Scalar = glm:scalar(T, Value),
             ok = test_glm:assert_scalar(T, Scalar, Value),
+            case T of
+                float ->
+                    ?assert(erlang:abs(glm:scalar_value(Scalar) - Value) < 1.0e-9);
+                double ->
+                    ?assert(erlang:abs(glm:scalar_value(Scalar) - Value) < 1.0e-12);
+                _ ->
+                    ok
+            end,
             ?assertInvalidValue(T, InvalidValue, glm:scalar(T, InvalidValue)),
             true
         end
