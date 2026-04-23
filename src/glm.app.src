@@ -1,13 +1,13 @@
 {application, glm, [
-    {description, "OpenGL Mathematics for the BEAM"},
-    {vsn, "0.1.0"},
-    {registered, []},
-    {applications, [
-        kernel,
-        stdlib
-    ]},
-    {env, []},
-    {modules, []},
-    {licenses, []},
-    {links, ["MIT"]}
- ]}.
+  {description, "OpenGL Mathematics for the BEAM"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications, [
+    kernel,
+    stdlib
+  ]},
+  {env, []},
+  {modules, []},
+  {licenses, []},
+  {links, ["MIT"]}
+]}.
