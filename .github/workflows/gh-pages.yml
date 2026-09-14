@@ -42,7 +42,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y cmake
 
       - name: Set up Erlang/OTP
-        uses: erlangsters/setup-erlang@v1
+        uses: erlangsters/setup-erlang-otp@v1
         with:
           erlang-version: 28
           install-rebar3: true

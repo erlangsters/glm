@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Erlang/OTP
-        uses: erlangsters/setup-erlang@v1
+        uses: erlangsters/setup-erlang-otp@v1
         with:
           erlang-version: 28
           install-rebar3: true
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Erlang/OTP
-        uses: erlangsters/setup-erlang@v1
+        uses: erlangsters/setup-erlang-otp@v1
         with:
           erlang-version: 28
           install-rebar3: true
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Erlang/OTP
-        uses: erlangsters/setup-erlang@v1
+        uses: erlangsters/setup-erlang-otp@v1
         with:
           erlang-version: 28
           install-rebar3: true
