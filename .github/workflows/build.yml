@@ -32,9 +32,12 @@ concurrency:
 
 jobs:
   ubuntu:
-    name: Ubuntu
+    name: Ubuntu OTP ${{ matrix.otp }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      matrix:
+        otp: [27, 28, 29]
     steps:
       - name: Check out the source code
         uses: actions/checkout@v4
@@ -42,7 +45,31 @@ jobs:
       - name: Set up Erlang/OTP
         uses: erlangsters/setup-erlang-otp@v1
         with:
-          erlang-version: 28
+          erlang-version: ${{ matrix.otp }}
+          install-rebar3: true
+
+      - name: Compile the binding
+        run: rebar3 compile
+
+      - name: Run the regression tests
+        run: rebar3 eunit
+
+  alpine:
+    name: Alpine 3.23 OTP 29
+    runs-on: ubuntu-latest
+    container: alpine:3.23
+    timeout-minutes: 15
+    steps:
+      - name: Check out the source code
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: apk add --no-cache bash cmake g++ make musl-dev ncurses-dev libstdc++ openssl
+
+      - name: Set up Erlang/OTP
+        uses: erlangsters/setup-erlang-otp@v1
+        with:
+          erlang-version: 29
           install-rebar3: true
 
       - name: Compile the binding
@@ -52,7 +79,7 @@ jobs:
         run: rebar3 eunit
 
   macos:
-    name: macOS
+    name: macOS OTP 29
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
@@ -62,7 +89,7 @@ jobs:
       - name: Set up Erlang/OTP
         uses: erlangsters/setup-erlang-otp@v1
         with:
-          erlang-version: 28
+          erlang-version: 29
           install-rebar3: true
 
       - name: Compile the binding
@@ -72,7 +99,7 @@ jobs:
         run: rebar3 eunit
 
   windows:
-    name: Windows
+    name: Windows OTP 29
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -82,7 +109,7 @@ jobs:
       - name: Set up Erlang/OTP
         uses: erlangsters/setup-erlang-otp@v1
         with:
-          erlang-version: 28
+          erlang-version: 29
           install-rebar3: true
 
       - name: Compile the binding
