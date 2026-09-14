@@ -1,7 +1,7 @@
 # OpenGL Mathematics for the BEAM
 
 [![Erlangsters Repository](https://img.shields.io/badge/erlangsters-glm-%23a90432)](https://github.com/erlangsters/glm)
-![Supported Erlang/OTP Versions](https://img.shields.io/badge/erlang%2Fotp-28-%23a90432)
+![Supported Erlang/OTP Versions](https://img.shields.io/badge/erlang%2Fotp-27%20%7C%2028%20%7C%2029-%23a90432)
 ![Current Version](https://img.shields.io/badge/version-0.0.1-%23354052)
 ![License](https://img.shields.io/github/license/erlangsters/glm)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/erlangsters/glm/build.yml)](https://github.com/erlangsters/glm/actions/workflows/build.yml)
